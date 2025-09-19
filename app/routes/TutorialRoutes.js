@@ -5,6 +5,7 @@ const TutorialRouter = express.Router();
 
 TutorialRouter.get("/", tutorials.findAll);
 TutorialRouter.post("/", tutorials.create);
+TutorialRouter.post("/:tutorialId/authors/:authorId", tutorials.addAuthorToTutorial);
 TutorialRouter.delete("/:id", tutorials.remove);
 
 export default TutorialRouter;

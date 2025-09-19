@@ -1,4 +1,4 @@
 export default {
     dialect: 'sqlite',
-    storage: '../db/sqlite.db'
+    storage: './db/sqlite.db'
 }

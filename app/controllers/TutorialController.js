@@ -2,6 +2,7 @@ import db from "../models/index.js";
 import { Op } from "sequelize";
 
 const Tutorial = db.tutorials;
+const Author = db.tutorials;
 
 export const create = (req, res) => {
     if(!req.body.title) {
@@ -48,3 +49,31 @@ export const remove = (req, res) => {
     })
     .catch(err => res.status(500).send({ message: err.message ?? 'Some error ocurred to retrieve data'}));
 }
+
+export const addAuthorToTutorial = async (req, res) => {
+  try {
+    const { tutorialId, authorId } = req.params;
+
+    const tutorial = await Tutorial.findByPk(tutorialId);
+    if (!tutorial) {
+      return res.status(404).send({ message: "Tutorial not found" });
+    }
+
+    const author = await Author.findByPk(authorId);
+    if (!author) {
+      return res.status(404).send({ message: "Author not found" });
+    }
+
+    await tutorial.addAuthor(author);
+
+    res.status(200).send({
+      message: `Author (ID: ${authorId}) added with success to Tutorial (ID: ${tutorialId}).`,
+    });
+
+  } catch (error) {
+    res.status(500).send({
+      message: "Error to add author to tutorial",
+      error: error.message,
+    });
+  }
+};
